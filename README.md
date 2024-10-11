@@ -63,12 +63,14 @@ For instance, if the processing is to be done on accounts and then contacts on t
 
 ```java
 public without sharing class AccountProcessing extends ChainableBatch {
-    // implement the counterpart of the `start` method from the original Database.Batchable
+    // implement the counterpart of the `start` method from the original
+    // Database.Batchable
     public override System.Iterable<Object> start(Chainable.Context ctx) {
         return [SELECT Id, Name FROM Account];
     }
 
-    // implement the counterpart of the `execute` method from the original Database.Batchable
+    // implement the counterpart of the `execute` method from the original
+    // Database.Batchable
     public override void execute(
         Chainable.Context ctx,
         System.Iterable<Object> iterableInstance
@@ -78,7 +80,8 @@ public without sharing class AccountProcessing extends ChainableBatch {
         }
     }
 
-    // implement the counterpart of the `finish` method from the original Database.Batchable
+    // implement the counterpart of the `finish` method from the original
+    // Database.Batchable
     public override void finish(Chainable.Context ctx) {
     }
 
