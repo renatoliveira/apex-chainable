@@ -5,8 +5,8 @@
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/src/main/webapp/resources/img/deploy.png">
 </a>
 
-Apex Batches can be chained by calling the successor batch from the `finish()` method of the previous batch. 
-But such hardcoding makes this model inflexible. It's hard to build the chain from outside, neighter from a central class 
+Apex Batches can be chained by calling the successor batch from the `finish()` method of the previous batch.
+But such hardcoding makes this model inflexible. It's hard to build the chain from outside, neighter from a central class
 nor on runtime dependant on business logic.
 
 The same applies when the `execute()` method of `Schedulable` or `Queueable` classes call other classes.
@@ -38,7 +38,7 @@ class FirstBatch implements Batchable<SObject> {
     void execute(BatchableContext ctx, List<Account> scope) { ... }
 
     void finish(BatchableContext ctx) {
-        Database.enqueueBatch(new SecondBatch()); 
+        Database.enqueueBatch(new SecondBatch());
     }
 }
 ```
@@ -50,9 +50,50 @@ class AnotherBatch implements Batchable<SObject> {
     void execute(BatchableContext ctx, List<Account> scope) { ... }
 
     void finish(BatchableContext ctx) {
-        System.schedule('name', cron, new ScheduledJob()); 
+        System.schedule('name', cron, new ScheduledJob());
     }
 }
+```
+
+## Implementation & example
+
+To use the Chainable interface the batchables, queueables or schedulables should extend their corresponding classes from the library: `ChainableBatch`, `ChainableQueueable` and `ChainableSchedulable`.
+
+For instance, if the processing is to be done on accounts and then contacts on the Salesforce org, the implementations might look like this:
+
+```java
+public without sharing class AccountProcessing extends ChainableBatch {
+    // implement the counterpart of the `start` method from the original Database.Batchable
+    public override System.Iterable<Object> start(Chainable.Context ctx) {
+        return [SELECT Id, Name FROM Account];
+    }
+
+    // implement the counterpart of the `execute` method from the original Database.Batchable
+    public override void execute(
+        Chainable.Context ctx,
+        System.Iterable<Object> iterableInstance
+    ) {
+        for (Account a : (List<Account>) iterableInstance) {
+            System.debug('Account Name: ' + a.Name);
+        }
+    }
+
+    // implement the counterpart of the `finish` method from the original Database.Batchable
+    public override void finish(Chainable.Context ctx) {
+    }
+
+    // you can define the the number of records to be processed on each
+    // iteration
+    protected override Integer batchSize() {
+        return 1;
+    }
+}
+```
+
+Assuming that a "ContactProcessing" class also exists, they can be chained as:
+
+```java
+new AccountProcessing().then(new ContactProcessing()).execute();
 ```
 
 ## Deferring
