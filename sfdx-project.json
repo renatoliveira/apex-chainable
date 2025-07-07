@@ -1,11 +1,18 @@
 {
-    "packageDirectories": [
-        {
-          "path": "force-app",
-          "default": true
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0"
+  "packageDirectories": [
+    {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "path": "force-app",
+      "default": true,
+      "package": "Chainable Apex",
+      "versionDescription": ""
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "50.0",
+  "packageAliases": {
+    "Chainable Apex": "0HoHs000000wrhbKAA"
+  }
 }
