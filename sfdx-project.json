@@ -13,6 +13,7 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "50.0",
   "packageAliases": {
-    "Chainable Apex": "0HoHs000000wrhbKAA"
+    "Chainable Apex": "0HoHs000000wrhbKAA",
+    "Chainable Apex@0.1.0-1": "04tHs000000w0YEIAY"
   }
 }
