@@ -55,6 +55,10 @@ class AnotherBatch implements Batchable<SObject> {
 }
 ```
 
+## Installation
+
+To install the package, use the Salesforce deploy button on the top of this README or deploy the app using the CLI. The packaged version found in the sfdx-package.json file is a private version of the library, which is not available for installation without a password.
+
 ## Implementation & example
 
 To use the Chainable interface the batchables, queueables or schedulables should extend their corresponding classes from the library: `ChainableBatch`, `ChainableQueueable` and `ChainableSchedulable`.
